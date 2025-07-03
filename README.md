@@ -14,20 +14,6 @@ An MCP server for NEAR intent swaps using the [Defuse Protocol one-click SDK](ht
 - pnpm >= 8
 - A JWT token from the Defuse Protocol (for authentication)
 
-## Installation
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd mcp-near-intent-swaps
-
-# Install dependencies
-pnpm install
-
-# Build the server
-pnpm build
-```
-
 ## Configuration
 
 Set the following environment variables:
@@ -137,6 +123,10 @@ The server provides detailed error messages for common issues:
 ## Development
 
 ```bash
+# Clone the repository
+git clone <repository-url>
+cd mcp-near-intent-swaps
+
 # Watch for changes during development
 pnpm watch
 
@@ -146,10 +136,6 @@ pnpm format
 # Lint code
 pnpm lint
 ```
-
-## License
-
-ISC - See LICENSE for details.
 
 ## Related Resources
 
