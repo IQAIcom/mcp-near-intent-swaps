@@ -1,7 +1,6 @@
 export const config = {
-	weatherApi: {
-		baseUrl: "https://api.openweathermap.org/data/2.5",
-		apiKey: process.env.OPENWEATHER_API_KEY || "",
-		defaultUnits: "metric", // metric (Celsius) or imperial (Fahrenheit)
+	nearSwapApi: {
+		baseUrl: process.env.NEAR_SWAP_API_URL || "https://1click.chaindefuser.com",
+		jwtToken: process.env.NEAR_SWAP_JWT_TOKEN || "",
 	},
 };

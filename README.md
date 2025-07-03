@@ -1,212 +1,158 @@
-# MCP Server Starter Template
+# NEAR Intent Swaps MCP Server
 
-A minimal starter template for building Model Context Protocol (MCP) servers using TypeScript and FastMCP.
+An MCP server for NEAR intent swaps using the [Defuse Protocol one-click SDK](https://github.com/defuse-protocol/one-click-sdk-typescript). This server provides tools for cross-chain token swaps through NEAR's intent-based architecture.
 
 ## Features
 
-* Basic project structure with `src/lib`, `src/services`, `src/tools`.
-* TypeScript setup (compiles to `dist/`).
-* Biome for linting and formatting.
-* `fastmcp` for MCP server implementation.
-* A weather service example demonstrating:
-  * Proper folder structure (lib, services, tools)
-  * API integration with error handling
-  * Parameter validation using Zod
-  * Separation of concerns
-* GitHub Actions workflows for CI and Release (manual trigger by default).
+- **GET_NEAR_SWAP_QUOTE**: Get quotes for cross-chain token swaps
+- **EXECUTE_NEAR_SWAP**: Execute swaps by submitting deposit transactions  
+- **CHECK_NEAR_SWAP_STATUS**: Check the status of swap executions
 
-## Getting Started
+## Prerequisites
 
-1. **Create a new repository from this template:**
-   Click [here](https://github.com/new?template_name=mcp-server-starter&template_owner=IQAIcom) to generate a new repository from this template.
+- Node.js >= 16
+- pnpm >= 8
+- A JWT token from the Defuse Protocol (for authentication)
 
-2. **Navigate to your new project:**
-
-    ```bash
-    cd /path/to/your-new-mcp-server
-    ```
-
-3. **Initialize Git Repository (if not already):**
-
-    ```bash
-    git init
-    git branch -M main # Or your preferred default branch name
-    ```
-
-4. **Customize `package.json`:**
-    * Update `name`, `version`, `description`, `author`, `repository`, etc.
-    * Update the `bin` entry if you change the command name.
-
-5. **Install dependencies:**
-
-    ```bash
-    pnpm install
-    ```
-
-6. **Configure environment variables:**
-   For the weather service example, you'll need an OpenWeather API key:
-
-   ```bash
-   # Create a .env file (add to .gitignore)
-   echo "OPENWEATHER_API_KEY=your_api_key_here" > .env
-   ```
-
-   Get an API key from [OpenWeather](https://openweathermap.org/api).
-
-7. **Initial Commit:**
-    It's a good idea to make an initial commit at this stage before setting up Husky and Changesets.
-
-    ```bash
-    git add .
-    git commit -m "feat: initial project setup from template"
-    ```
-
-8. **Develop your server:**
-    * Add your custom tools in the `src/tools/` directory.
-    * Implement logic in `src/lib/` and `src/services/`.
-    * Register tools in `src/index.ts`.
-
-## Example Weather Tool
-
-This template includes a weather service example that demonstrates:
-
-1. **HTTP Utilities** (`src/lib/http.ts`):
-   * Type-safe HTTP requests with Zod validation
-   * Error handling
-
-2. **Configuration** (`src/lib/config.ts`):
-   * Environment variable management
-   * Service configuration
-
-3. **Weather Service** (`src/services/weatherService.ts`):
-   * API integration
-   * Data transformation
-   * Proper error propagation
-
-4. **Weather Tool** (`src/tools/weather.ts`):
-   * Parameter validation with Zod
-   * User-friendly output formatting
-   * Error handling and user guidance
-
-To use the weather tool:
+## Installation
 
 ```bash
-# Set your OpenWeather API key
-export OPENWEATHER_API_KEY=your_api_key_here
+# Clone the repository
+git clone <repository-url>
+cd mcp-near-intent-swaps
 
-# Run the server
-pnpm run start
+# Install dependencies
+pnpm install
 
-# Connect with an MCP client and use the GET_WEATHER tool
-# with parameter: { "city": "London" }
+# Build the server
+pnpm build
 ```
 
-## Pre-commit Linting (Husky & lint-staged)
+## Configuration
 
-This template includes `husky` and `lint-staged` in its `devDependencies` for running Biome on staged files before committing. To set it up:
+Set the following environment variables:
 
-1. **Ensure your package.json has the prepare script for husky:**
+```bash
+# Optional: Custom API endpoint (defaults to https://1click.chaindefuser.com)
+export NEAR_SWAP_API_URL="https://1click.chaindefuser.com"
 
-   ```json
-   {
-     "scripts": {
-       "prepare": "husky"
-     }
-   }
-   ```
+# Required: JWT token for authentication
+export NEAR_SWAP_JWT_TOKEN="your-jwt-token-here"
+```
 
-2. **Install dependencies and initialize husky:**
+## Usage
 
-   ```bash
-   pnpm install
-   pnpm dlx husky init
-   ```
+### Running the Server
 
-   This creates a `.husky` directory with the necessary setup.
+```bash
+# Start the MCP server
+pnpm start
 
-3. **Create the pre-commit hook for lint-staged:**
+# Or run directly
+node dist/index.js
+```
 
-   ```bash
-   # Create or edit the pre-commit file
-   echo '#!/usr/bin/env sh' > .husky/pre-commit
-   echo '. "$(dirname -- "$0")/_/husky.sh"
-   
-   pnpm lint-staged' >> .husky/pre-commit
-   
-   # Make it executable
-   chmod +x .husky/pre-commit
+### Available Tools
 
-   ```
+#### 1. GET_NEAR_SWAP_QUOTE
 
-4. **Configure `lint-staged` in `package.json`:**
-   ```json
-   // In package.json
-   "lint-staged": {
-     "*.{js,ts,cjs,mjs,jsx,tsx,json,jsonc}": [
-       "biome check --write --organize-imports-enabled=false --no-errors-on-unmatched"
-     ]
-   }
-   ```
+Get a quote for a cross-chain token swap.
 
-   *Adjust the Biome command as needed. The one above is a common example.*
+**Parameters:**
+- `swapType`: "EXACT_INPUT" | "EXACT_OUTPUT" - Type of swap
+- `originAsset`: string - Origin asset identifier (e.g., 'nep141:arb-0xaf88d065e77c8cc2239327c5edb3a432268e5831.omft.near')
+- `destinationAsset`: string - Destination asset identifier
+- `amount`: string - Amount to swap (in base units)
+- `recipient`: string - Recipient address
+- `recipientType`: "ORIGIN_CHAIN" | "DESTINATION_CHAIN" - Chain type for recipient
+- `refundTo?`: string - Refund address (optional)
+- `refundType?`: "ORIGIN_CHAIN" | "DESTINATION_CHAIN" - Chain type for refund (optional)
+- `slippageTolerance?`: number - Slippage tolerance in basis points (default: 100 = 1%)
+- `dry?`: boolean - Whether this is a dry run (default: true)
+- `depositType?`: "ORIGIN_CHAIN" | "DESTINATION_CHAIN" - Deposit type (optional)
 
-5. **Test it:**
-   Stage some changes to a `.ts` file and try to commit. Biome should run on the staged file.
+#### 2. EXECUTE_NEAR_SWAP
 
-## Release Management (Changesets)
+Execute a swap by submitting a deposit transaction.
 
-This template is ready for release management using [Changesets](https://github.com/changesets/changesets).
+**Parameters:**
+- `txHash`: string - Transaction hash of the deposit transaction
+- `depositAddress`: string - Deposit address for the swap
 
-1. **Install Changesets CLI (if not already in devDependencies):**
-    The template `package.json` should include `@changesets/cli`. If not:
+#### 3. CHECK_NEAR_SWAP_STATUS
 
-    ```bash
-    pnpm add -D @changesets/cli
-    ```
+Check the execution status of a swap.
 
-2. **Initialize Changesets:**
-    This command will create a `.changeset` directory with some configuration files.
+**Parameters:**
+- `depositAddress`: string - Deposit address to check status for
 
-    ```bash
-    pnpm changeset init
-    # or npx changeset init
-    ```
+## Example Usage
 
-    Commit the generated `.changeset` directory and its contents.
+### Getting a Quote
 
-3. **Adding Changesets During Development:**
-    When you make a change that should result in a version bump (fix, feature, breaking change):
+```json
+{
+  "swapType": "EXACT_INPUT",
+  "originAsset": "nep141:arb-0xaf88d065e77c8cc2239327c5edb3a432268e5831.omft.near",
+  "destinationAsset": "nep141:sol-5ce3bf3a31af18be40ba30f721101b4341690186.omft.near",
+  "amount": "1000",
+  "recipient": "13QkxhNMrTPxoCkRdYdJ65tFuwXPhL5gLS2Z5Nr6gjRK",
+  "recipientType": "DESTINATION_CHAIN",
+  "refundTo": "0x2527D02599Ba641c19FEa793cD0F167589a0f10D",
+  "refundType": "ORIGIN_CHAIN",
+  "slippageTolerance": 100,
+  "dry": true
+}
+```
 
-    ```bash
-    pnpm changeset add
-    # or npx changeset add
-    ```
+### Executing a Swap
 
-    Follow the prompts. This will create a markdown file in the `.changeset` directory describing the change.
-    Commit this changeset file along with your code changes.
+```json
+{
+  "txHash": "0x1234567890abcdef...",
+  "depositAddress": "0xabcdef1234567890..."
+}
+```
 
-4. **Publishing a Release:**
-    The GitHub Actions workflow `release.yml` (in `mcp-server-starter/.github/workflows/`) is set up for this. When you are ready to release:
-    * Ensure all feature PRs with their changeset files are merged to `main`.
-    * **Important:** Before publishing, ensure your `package.json` is complete. Add or update fields like `keywords`, `author`, `repository` (e.g., `"repository": {"type": "git", "url": "https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git"}`), `bugs` (e.g., `"bugs": {"url": "https://github.com/YOUR_USERNAME/YOUR_REPO_NAME/issues"}`), and `homepage` (e.g., `"homepage": "https://github.com/YOUR_USERNAME/YOUR_REPO_NAME#readme"`) for better discoverability and information on npm.
-    * The `release.yml` workflow (manually triggered by default in the template) will:
-        1. Run `changeset version` to consume changeset files, update `package.json` versions, and update `CHANGELOG.md`. It will push these to a `changeset-release/main` branch and open a "Version Packages" PR.
-        2. **Merge the "Version Packages" PR.**
-        3. Upon merging, the workflow runs again on `main`. This time, it will run `pnpm run publish-packages` (which should include `changeset publish`) to publish to npm and create GitHub Releases/tags.
-    * **To enable automatic release flow:** Change `on: workflow_dispatch` in `release.yml` to `on: push: branches: [main]` (or your release branch).
+### Checking Status
 
-## Available Scripts
+```json
+{
+  "depositAddress": "0xabcdef1234567890..."
+}
+```
 
-* `pnpm run build`: Compiles TypeScript to JavaScript in `dist/` and makes the output executable.
-* `pnpm run dev`: Runs the server in development mode using `tsx` (hot-reloading for TypeScript).
-* `pnpm run start`: Runs the built server (from `dist/`) using Node.
-* `pnpm run lint`: Lints the codebase using Biome.
-* `pnpm run format`: Formats the codebase using Biome.
+## Authentication
 
-## Using the Server
+This server requires a JWT token for authentication with the Defuse Protocol API. Make sure to set the `NEAR_SWAP_JWT_TOKEN` environment variable before running the server.
 
-After building (`pnpm run build`), you can run the server:
+## Error Handling
 
-* Directly if linked or globally installed: `mcp-hello-server` (or your customized bin name).
-* Via node: `node dist/index.js`
-* Via `pnpm dlx` (once published): `pnpm dlx your-published-package-name`
+The server provides detailed error messages for common issues:
+- Missing JWT token
+- Invalid request parameters
+- API connection errors
+- Invalid asset identifiers
+
+## Development
+
+```bash
+# Watch for changes during development
+pnpm watch
+
+# Format code
+pnpm format
+
+# Lint code
+pnpm lint
+```
+
+## License
+
+ISC - See LICENSE for details.
+
+## Related Resources
+
+- [Defuse Protocol one-click SDK](https://github.com/defuse-protocol/one-click-sdk-typescript)
+- [MCP Specification](https://modelcontextprotocol.io)
+- [FastMCP Documentation](https://github.com/jlowin/fastmcp)
