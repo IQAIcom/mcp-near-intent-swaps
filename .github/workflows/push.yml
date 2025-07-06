@@ -1,4 +1,4 @@
-name: Push checks (Template - Manual Trigger)
+name: Push checks
 
 on: [push]
 
