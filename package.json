@@ -7,7 +7,9 @@
 	"bin": {
 		"mcp-near-swap-server": "dist/index.js"
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"build": "tsc && shx chmod +x dist/index.js",
 		"prepare": "husky",
@@ -24,7 +26,7 @@
 		"@defuse-protocol/one-click-sdk-typescript": "^0.1.5",
 		"dedent": "^1.6.0",
 		"fastmcp": "^1.27.7",
-		"zod": "^3.25.7"
+		"zod": "^3.25.74"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "*",
