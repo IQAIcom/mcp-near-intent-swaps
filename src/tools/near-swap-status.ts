@@ -6,14 +6,17 @@ const statusToolParams = z.object({
 	depositAddress: z
 		.string()
 		.min(1)
-		.describe("Deposit address to check the execution status for"),
+		.describe(
+			"The unique deposit address from the quote response - used to track and retrieve the current status of the swap",
+		),
 });
 
 type StatusToolParams = z.infer<typeof statusToolParams>;
 
 export const nearSwapStatusTool = {
 	name: "CHECK_NEAR_SWAP_STATUS",
-	description: "Check the execution status of a NEAR intent swap",
+	description:
+		"Check the current execution status of a NEAR intent swap. Returns the swap state (PENDING_DEPOSIT, PROCESSING, SUCCESS, REFUNDED, FAILED, etc.) along with detailed transaction information, swap amounts, and any associated blockchain transaction hashes.",
 	parameters: statusToolParams,
 	execute: async (params: StatusToolParams) => {
 		const nearSwapService = new NearSwapService();
@@ -24,7 +27,7 @@ export const nearSwapStatusTool = {
 			);
 
 			return dedent`
-				NEAR Swap Status:
+				NEAR Swap Status Check:
 
 				Deposit Address: ${params.depositAddress}
 

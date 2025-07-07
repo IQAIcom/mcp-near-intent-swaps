@@ -6,15 +6,23 @@ const executeToolParams = z.object({
 	txHash: z
 		.string()
 		.min(1)
-		.describe("Transaction hash of the deposit transaction"),
-	depositAddress: z.string().min(1).describe("Deposit address for the swap"),
+		.describe(
+			"Transaction hash of your deposit transaction that was sent to the deposit address from the quote",
+		),
+	depositAddress: z
+		.string()
+		.min(1)
+		.describe(
+			"The deposit address that was provided in the quote response and to which the deposit transaction was sent",
+		),
 });
 
 type ExecuteToolParams = z.infer<typeof executeToolParams>;
 
 export const nearSwapExecuteTool = {
 	name: "EXECUTE_NEAR_SWAP",
-	description: "Execute a NEAR intent swap by submitting a deposit transaction",
+	description:
+		"Submit a deposit transaction hash to notify the 1Click service that funds have been sent. This is an optional step that can speed up swap processing by allowing the system to preemptively verify the deposit, rather than waiting for automatic detection.",
 	parameters: executeToolParams,
 	execute: async (params: ExecuteToolParams) => {
 		const nearSwapService = new NearSwapService();
@@ -23,7 +31,7 @@ export const nearSwapExecuteTool = {
 			const result = await nearSwapService.executeSwap(params);
 
 			return dedent`
-				NEAR Swap Execution:
+				NEAR Swap Execution Notification:
 
 				Transaction Hash: ${params.txHash}
 				Deposit Address: ${params.depositAddress}
