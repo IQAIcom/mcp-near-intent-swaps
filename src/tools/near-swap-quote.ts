@@ -30,18 +30,22 @@ const quoteToolParams = z.object({
 		.describe("Chain type for refund (optional)"),
 	slippageTolerance: z
 		.number()
-		.optional()
-		.describe(
-			"Slippage tolerance in basis points (100 = 1%, optional, defaults to 100)",
-		),
+		.default(100)
+		.describe("Slippage tolerance in basis points (100 = 1%, defaults to 100)"),
 	dry: z
 		.boolean()
-		.optional()
-		.describe("Whether this is a dry run (optional, defaults to true)"),
+		.default(true)
+		.describe("Whether this is a dry run (defaults to true)"),
 	depositType: z
 		.enum(["ORIGIN_CHAIN", "DESTINATION_CHAIN"])
 		.optional()
 		.describe("Deposit type (optional)"),
+	deadline: z
+		.string()
+		.optional()
+		.describe(
+			"Quote deadline as ISO 8601 date string (optional, defaults to 1 hour from now)",
+		),
 });
 
 type QuoteToolParams = z.infer<typeof quoteToolParams>;
@@ -66,8 +70,10 @@ export const nearSwapQuoteTool = {
 				Amount: ${params.amount}
 				Recipient: ${params.recipient} (${params.recipientType})
 				${params.refundTo ? `Refund To: ${params.refundTo} (${params.refundType})` : ""}
-				Slippage Tolerance: ${params.slippageTolerance || 100} basis points (${((params.slippageTolerance || 100) / 100).toFixed(2)}%)
-				Dry Run: ${params.dry ?? true}
+				Slippage Tolerance: ${params.slippageTolerance} basis points (${(params.slippageTolerance / 100).toFixed(2)}%)
+				Dry Run: ${params.dry}
+				Deadline: ${params.deadline ?? new Date(Date.now() + 3600 * 1000).toISOString()}
+				${params.depositType ? `Deposit Type: ${params.depositType}` : ""}
 
 				Quote Response:
 				${JSON.stringify(quote, null, 2)}
