@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import { FastMCP } from "fastmcp";
 import { nearSwapExecuteTool } from "./tools/near-swap-execute.js";
-import { nearSwapQuoteTool } from "./tools/near-swap-quote.js";
+import { nearSwapFullQuoteTool } from "./tools/near-swap-full-quote.js";
+import { nearSwapSimpleQuoteTool } from "./tools/near-swap-quote.js";
 import { nearSwapStatusTool } from "./tools/near-swap-status.js";
 import { nearSwapTokensTool } from "./tools/near-swap-tokens.js";
 
@@ -14,7 +15,8 @@ async function main() {
 	});
 
 	// Add all NEAR swap tools
-	server.addTool(nearSwapQuoteTool);
+	server.addTool(nearSwapSimpleQuoteTool);
+	server.addTool(nearSwapFullQuoteTool);
 	server.addTool(nearSwapExecuteTool);
 	server.addTool(nearSwapStatusTool);
 	server.addTool(nearSwapTokensTool);
@@ -29,7 +31,10 @@ async function main() {
 		console.log("   You can now connect to it using an MCP client.");
 		console.log("   Available tools:");
 		console.log(
-			"   - GET_NEAR_SWAP_QUOTE: Get quotes for cross-chain token swaps",
+			"   - GET_NEAR_SWAP_SIMPLE_QUOTE: Get simple quotes for cross-chain token swaps (dry run, no addresses needed)",
+		);
+		console.log(
+			"   - GET_NEAR_SWAP_FULL_QUOTE: Get full quotes for cross-chain token swaps (requires addresses)",
 		);
 		console.log(
 			"   - EXECUTE_NEAR_SWAP: Execute swaps by submitting deposit transactions",
