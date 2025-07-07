@@ -22,12 +22,13 @@ const quoteToolParams = z.object({
 	recipient: z.string().min(1).describe("Recipient address"),
 	recipientType: z
 		.enum(["ORIGIN_CHAIN", "DESTINATION_CHAIN"])
-		.describe("Chain type for the recipient"),
+		.default("ORIGIN_CHAIN")
+		.describe("Chain type for the recipient (defaults to ORIGIN_CHAIN)"),
 	refundTo: z.string().optional().describe("Refund address (optional)"),
 	refundType: z
 		.enum(["ORIGIN_CHAIN", "DESTINATION_CHAIN"])
-		.optional()
-		.describe("Chain type for refund (optional)"),
+		.default("ORIGIN_CHAIN")
+		.describe("Chain type for refund (defaults to ORIGIN_CHAIN)"),
 	slippageTolerance: z
 		.number()
 		.default(100)
@@ -38,13 +39,13 @@ const quoteToolParams = z.object({
 		.describe("Whether this is a dry run (defaults to true)"),
 	depositType: z
 		.enum(["ORIGIN_CHAIN", "DESTINATION_CHAIN"])
-		.optional()
-		.describe("Deposit type (optional)"),
+		.default("ORIGIN_CHAIN")
+		.describe("Deposit type (defaults to ORIGIN_CHAIN)"),
 	deadline: z
 		.string()
-		.optional()
+		.default(new Date(Date.now() + 3600 * 1000).toISOString())
 		.describe(
-			"Quote deadline as ISO 8601 date string (optional, defaults to 1 hour from now)",
+			"Quote deadline as ISO 8601 date string (defaults to 1 hour from now)",
 		),
 });
 
