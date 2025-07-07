@@ -13,13 +13,15 @@ export interface QuoteParams {
 	destinationAsset: string;
 	amount: string;
 	recipient: string;
-	recipientType: "ORIGIN_CHAIN" | "DESTINATION_CHAIN";
+	recipientType: "DESTINATION_CHAIN" | "INTENTS";
 	refundTo?: string;
-	refundType?: "ORIGIN_CHAIN" | "DESTINATION_CHAIN";
+	refundType?: "ORIGIN_CHAIN" | "INTENTS";
 	slippageTolerance?: number; // basis points (100 = 1%)
 	dry?: boolean;
-	depositType?: "ORIGIN_CHAIN" | "DESTINATION_CHAIN";
+	depositType?: "ORIGIN_CHAIN" | "INTENTS";
 	deadline?: string; // ISO 8601 date string
+	referral?: string;
+	quoteWaitingTimeMs?: number;
 }
 
 export interface SwapExecution {
@@ -57,6 +59,10 @@ export class NearSwapService {
 			...(params.refundTo && { refundTo: params.refundTo }),
 			...(params.refundType && {
 				refundType: params.refundType as QuoteRequest["refundType"],
+			}),
+			...(params.referral && { referral: params.referral }),
+			...(params.quoteWaitingTimeMs && {
+				quoteWaitingTimeMs: params.quoteWaitingTimeMs,
 			}),
 		};
 

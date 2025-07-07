@@ -6,47 +6,79 @@ const quoteToolParams = z.object({
 	swapType: z
 		.enum(["EXACT_INPUT", "EXACT_OUTPUT"])
 		.default("EXACT_INPUT")
-		.describe("Type of swap - exact input amount or exact output amount"),
+		.describe(
+			"Whether to use the amount as the output or the input for the basis of the swap: EXACT_INPUT - request output amount for exact input, EXACT_OUTPUT - request output amount for exact output. The refundTo address will always receive excess tokens back even after the swap is complete.",
+		),
 	originAsset: z
 		.string()
 		.min(1)
 		.describe(
-			"Origin asset identifier (e.g. 'nep141:arb-0xaf88d065e77c8cc2239327c5edb3a432268e5831.omft.near')",
+			"ID of the origin asset (e.g. 'nep141:arb-0xaf88d065e77c8cc2239327c5edb3a432268e5831.omft.near')",
 		),
 	destinationAsset: z
 		.string()
 		.min(1)
 		.describe(
-			"Destination asset identifier (e.g. 'nep141:sol-5ce3bf3a31af18be40ba30f721101b4341690186.omft.near')",
+			"ID of the destination asset (e.g. 'nep141:sol-5ce3bf3a31af18be40ba30f721101b4341690186.omft.near')",
 		),
-	amount: z.string().min(1).describe("Amount to swap (in base units)"),
-	recipient: z.string().min(1).describe("Recipient address"),
+	amount: z
+		.string()
+		.min(1)
+		.describe(
+			"Amount to swap as the base amount (can be switched to exact input/output using the dedicated flag), denoted in the smallest unit of the specified currency (e.g., wei for ETH)",
+		),
+	recipient: z
+		.string()
+		.min(1)
+		.describe("Recipient address. The format should match recipientType."),
 	recipientType: z
-		.enum(["ORIGIN_CHAIN", "DESTINATION_CHAIN"])
-		.default("ORIGIN_CHAIN")
-		.describe("Chain type for the recipient (defaults to ORIGIN_CHAIN)"),
-	refundTo: z.string().optional().describe("Refund address (optional)"),
+		.enum(["DESTINATION_CHAIN", "INTENTS"])
+		.default("DESTINATION_CHAIN")
+		.describe(
+			"Type of recipient address: DESTINATION_CHAIN - assets will be transferred to chain of destinationAsset, INTENTS - assets will be transferred to account inside intents",
+		),
+	refundTo: z.string().optional().describe("Address for user refund"),
 	refundType: z
-		.enum(["ORIGIN_CHAIN", "DESTINATION_CHAIN"])
+		.enum(["ORIGIN_CHAIN", "INTENTS"])
 		.default("ORIGIN_CHAIN")
-		.describe("Chain type for refund (defaults to ORIGIN_CHAIN)"),
+		.describe(
+			"Type of refund address: ORIGIN_CHAIN - assets will be refunded to refundTo address on the origin chain, INTENTS - assets will be refunded to refundTo intents account",
+		),
 	slippageTolerance: z
 		.number()
 		.default(100)
-		.describe("Slippage tolerance in basis points (100 = 1%, defaults to 100)"),
+		.describe(
+			"Slippage tolerance for the swap. This value is in basis points (1/100th of a percent), e.g. 100 for 1% slippage.",
+		),
 	dry: z
 		.boolean()
 		.default(true)
-		.describe("Whether this is a dry run (defaults to true)"),
+		.describe(
+			"Flag indicating whether this is a dry run request. If true, the response will NOT contain the following fields: depositAddress, timeWhenInactive, deadline",
+		),
 	depositType: z
-		.enum(["ORIGIN_CHAIN", "DESTINATION_CHAIN"])
+		.enum(["ORIGIN_CHAIN", "INTENTS"])
 		.default("ORIGIN_CHAIN")
-		.describe("Deposit type (defaults to ORIGIN_CHAIN)"),
+		.describe(
+			"Type of the deposit address: ORIGIN_CHAIN - deposit address on the origin chain, INTENTS - account ID inside near intents to which you should transfer assets inside intents",
+		),
 	deadline: z
 		.string()
 		.default(new Date(Date.now() + 3600 * 1000).toISOString())
 		.describe(
-			"Quote deadline as ISO 8601 date string (defaults to 1 hour from now)",
+			"Timestamp in ISO format, that identifies when user refund will begin if the swap isn't completed by then. It needs to exceed the time required for the deposit tx to be minted, e.g. for Bitcoin it might require ~1h depending on the gas fees paid.",
+		),
+	referral: z
+		.string()
+		.optional()
+		.describe(
+			"Referral identifier (lower case only). It will be reflected in the on-chain data and displayed on public analytics platforms.",
+		),
+	quoteWaitingTimeMs: z
+		.number()
+		.default(3000)
+		.describe(
+			"Time in milliseconds user is willing to wait for quote from relay",
 		),
 });
 
@@ -75,7 +107,9 @@ export const nearSwapQuoteTool = {
 				Slippage Tolerance: ${params.slippageTolerance} basis points (${(params.slippageTolerance / 100).toFixed(2)}%)
 				Dry Run: ${params.dry}
 				Deadline: ${params.deadline ?? new Date(Date.now() + 3600 * 1000).toISOString()}
-				${params.depositType ? `Deposit Type: ${params.depositType}` : ""}
+				Deposit Type: ${params.depositType}
+				${params.referral ? `Referral: ${params.referral}` : ""}
+				Quote Waiting Time: ${params.quoteWaitingTimeMs}ms
 
 				Quote Response:
 				${JSON.stringify(quote, null, 2)}
