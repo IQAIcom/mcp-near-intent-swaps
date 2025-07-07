@@ -1,5 +1,12 @@
 # mcp-near-intent-swaps
 
+## 0.0.10
+
+### Patch Changes
+
+- 6d968b0: Adds better tool descriptions
+- 6a979d3: Updates description to add direction to get tokens tool for qoute enqiry
+
 ## 0.0.9
 
 ### Patch Changes
