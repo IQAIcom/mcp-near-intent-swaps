@@ -5,6 +5,7 @@ import { NearSwapService } from "../services/near-swap-service.js";
 const quoteToolParams = z.object({
 	swapType: z
 		.enum(["EXACT_INPUT", "EXACT_OUTPUT"])
+		.default("EXACT_INPUT")
 		.describe("Type of swap - exact input amount or exact output amount"),
 	originAsset: z
 		.string()
