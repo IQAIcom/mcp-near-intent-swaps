@@ -1,5 +1,11 @@
 # mcp-near-intent-swaps
 
+## 0.0.9
+
+### Patch Changes
+
+- 2e12ccb: Adds seperate tool for getting simple qoutes
+
 ## 0.0.8
 
 ### Patch Changes
