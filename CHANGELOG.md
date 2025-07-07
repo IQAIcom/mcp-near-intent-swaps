@@ -1,5 +1,11 @@
 # mcp-near-intent-swaps
 
+## 0.0.4
+
+### Patch Changes
+
+- d8d13ba: Updates defaults for get qoute
+
 ## 0.0.3
 
 ### Patch Changes
