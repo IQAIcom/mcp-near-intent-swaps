@@ -22,7 +22,7 @@ type ExecuteToolParams = z.infer<typeof executeToolParams>;
 export const nearSwapExecuteTool = {
 	name: "EXECUTE_NEAR_SWAP",
 	description:
-		"Submit a deposit transaction hash to notify the 1Click service that funds have been sent. This is an optional step that can speed up swap processing by allowing the system to preemptively verify the deposit, rather than waiting for automatic detection.",
+		"[STEP 4] Submit a deposit transaction hash to initiate the swap after sending funds to the deposit address. This notifies the 1Click service that funds have been sent and triggers the swap execution process. Use this after users have sent their funds to the deposit address from the full quote response.",
 	parameters: executeToolParams,
 	execute: async (params: ExecuteToolParams) => {
 		const nearSwapService = new NearSwapService();

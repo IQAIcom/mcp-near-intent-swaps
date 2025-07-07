@@ -16,7 +16,7 @@ type StatusToolParams = z.infer<typeof statusToolParams>;
 export const nearSwapStatusTool = {
 	name: "CHECK_NEAR_SWAP_STATUS",
 	description:
-		"Check the current execution status of a NEAR intent swap. Returns the swap state (PENDING_DEPOSIT, PROCESSING, SUCCESS, REFUNDED, FAILED, etc.) along with detailed transaction information, swap amounts, and any associated blockchain transaction hashes.",
+		"[STEP 5] Check the current execution status of a NEAR intent swap. Returns the swap state (PENDING_DEPOSIT, PROCESSING, SUCCESS, REFUNDED, FAILED, etc.) along with detailed transaction information. Use this to monitor swap progress after initiating the swap, and continue polling until the swap is complete.",
 	parameters: statusToolParams,
 	execute: async (params: StatusToolParams) => {
 		const nearSwapService = new NearSwapService();
