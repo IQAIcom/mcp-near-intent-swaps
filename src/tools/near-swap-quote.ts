@@ -46,7 +46,7 @@ type SimpleQuoteToolParams = z.infer<typeof simpleQuoteToolParams>;
 export const nearSwapSimpleQuoteTool = {
 	name: "GET_NEAR_SWAP_SIMPLE_QUOTE",
 	description:
-		"Get a simple quote for a NEAR intent swap between different chains and assets. This is a dry run that doesn't require any addresses and provides basic swap information.",
+		"[STEP 1] Get a simple quote for a NEAR intent swap between different chains and assets. This is a dry run that doesn't require any addresses - perfect for users who want to check swap rates and fees before committing to a swap. Use this when users want to explore swap options without providing recipient addresses.",
 	parameters: simpleQuoteToolParams,
 	execute: async (params: SimpleQuoteToolParams) => {
 		const nearSwapService = new NearSwapService();
