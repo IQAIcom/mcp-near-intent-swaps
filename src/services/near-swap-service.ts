@@ -83,4 +83,8 @@ export class NearSwapService {
 	): Promise<GetExecutionStatusResponse> {
 		return await OneClickService.getExecutionStatus(depositAddress);
 	}
+
+	async getSupportedTokens(): Promise<unknown> {
+		return await OneClickService.getTokens();
+	}
 }
