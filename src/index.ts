@@ -3,6 +3,7 @@ import { FastMCP } from "fastmcp";
 import { nearSwapExecuteTool } from "./tools/near-swap-execute.js";
 import { nearSwapQuoteTool } from "./tools/near-swap-quote.js";
 import { nearSwapStatusTool } from "./tools/near-swap-status.js";
+import { nearSwapTokensTool } from "./tools/near-swap-tokens.js";
 
 async function main() {
 	console.log("Initializing NEAR Intent Swaps MCP Server...");
@@ -16,6 +17,7 @@ async function main() {
 	server.addTool(nearSwapQuoteTool);
 	server.addTool(nearSwapExecuteTool);
 	server.addTool(nearSwapStatusTool);
+	server.addTool(nearSwapTokensTool);
 
 	try {
 		await server.start({
@@ -34,6 +36,9 @@ async function main() {
 		);
 		console.log(
 			"   - CHECK_NEAR_SWAP_STATUS: Check the status of swap executions",
+		);
+		console.log(
+			"   - GET_NEAR_SWAP_TOKENS: Get list of supported tokens for swaps",
 		);
 		console.log("");
 		console.log(
