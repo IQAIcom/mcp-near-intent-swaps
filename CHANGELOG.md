@@ -1,5 +1,11 @@
 # mcp-near-intent-swaps
 
+## 0.0.6
+
+### Patch Changes
+
+- c45834c: Updates api interface to have better descriptions
+
 ## 0.0.5
 
 ### Patch Changes
