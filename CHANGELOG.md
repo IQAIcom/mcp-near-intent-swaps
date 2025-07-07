@@ -1,5 +1,11 @@
 # mcp-near-intent-swaps
 
+## 0.0.5
+
+### Patch Changes
+
+- a5b8e0b: Adds default for swap type
+
 ## 0.0.4
 
 ### Patch Changes
