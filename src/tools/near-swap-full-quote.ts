@@ -93,7 +93,7 @@ type FullQuoteToolParams = z.infer<typeof fullQuoteToolParams>;
 export const nearSwapFullQuoteTool = {
 	name: "GET_NEAR_SWAP_FULL_QUOTE",
 	description:
-		"[STEP 2] Get a full quote with deposit address for a NEAR intent swap. This requires recipient and refund addresses and returns a unique deposit address where users can send their funds to initiate the swap. Use this when users are ready to proceed with the swap after checking the simple quote.",
+		"[STEP 2] Get a full quote with deposit address for a NEAR intent swap. This requires recipient and refund addresses and returns a unique deposit address where users can send their funds to initiate the swap. Use this when users are ready to proceed with the swap after checking the simple quote. NOTE: If users provide simple token names (e.g., 'ETH', 'USDC'), first use GET_NEAR_SWAP_TOKENS to discover the exact token IDs required for this API.",
 	parameters: fullQuoteToolParams,
 	execute: async (params: FullQuoteToolParams) => {
 		const nearSwapService = new NearSwapService();
