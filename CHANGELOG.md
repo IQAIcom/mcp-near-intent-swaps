@@ -1,5 +1,11 @@
 # mcp-near-intent-swaps
 
+## 0.0.8
+
+### Patch Changes
+
+- c3d7c84: Adds supported tokens tool
+
 ## 0.0.7
 
 ### Patch Changes
