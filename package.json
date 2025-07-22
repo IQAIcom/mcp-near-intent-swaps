@@ -1,5 +1,5 @@
 {
-	"name": "@iqai/mcp-near-intent-swaps",
+	"name": "@iqai/mcp-near-intents",
 	"version": "0.0.10",
 	"description": "An MCP server for NEAR intents swap using the Defuse Protocol one-click SDK.",
 	"main": "dist/index.js",
