@@ -1,6 +1,6 @@
-# NEAR Intent Swaps MCP Server
+# NEAR Intents MCP Server
 
-An MCP server for NEAR intent swaps using the [Defuse Protocol one-click SDK](https://github.com/defuse-protocol/one-click-sdk-typescript). This server provides tools for cross-chain token swaps through NEAR's intent-based architecture.
+An MCP server for NEAR intents using the [Defuse Protocol one-click SDK](https://github.com/defuse-protocol/one-click-sdk-typescript). This server provides tools for cross-chain token swaps through NEAR's intent-based architecture.
 
 ## Features
 
@@ -180,7 +180,7 @@ The server provides detailed error messages for common issues:
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd mcp-near-intent-swaps
+cd mcp-near-intents
 
 # Watch for changes during development
 pnpm watch
