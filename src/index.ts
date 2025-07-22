@@ -7,10 +7,10 @@ import { nearSwapStatusTool } from "./tools/near-swap-status.js";
 import { nearSwapTokensTool } from "./tools/near-swap-tokens.js";
 
 async function main() {
-	console.log("Initializing NEAR Intent Swaps MCP Server...");
+	console.log("Initializing NEAR Intents MCP Server...");
 
 	const server = new FastMCP({
-		name: "NEAR Intent Swaps MCP Server",
+		name: "NEAR Intents MCP Server",
 		version: "0.0.1",
 	});
 
@@ -25,9 +25,7 @@ async function main() {
 		await server.start({
 			transportType: "stdio",
 		});
-		console.log(
-			"✅ NEAR Intent Swaps MCP Server started successfully over stdio.",
-		);
+		console.log("✅ NEAR Intents MCP Server started successfully over stdio.");
 		console.log("   You can now connect to it using an MCP client.");
 		console.log("   Available tools:");
 		console.log(
@@ -50,14 +48,14 @@ async function main() {
 			"   Make sure to set the NEAR_SWAP_JWT_TOKEN environment variable for authentication.",
 		);
 	} catch (error) {
-		console.error("❌ Failed to start NEAR Intent Swaps MCP Server:", error);
+		console.error("❌ Failed to start NEAR Intents MCP Server:", error);
 		process.exit(1);
 	}
 }
 
 main().catch((error) => {
 	console.error(
-		"❌ An unexpected error occurred in the NEAR Intent Swaps MCP Server:",
+		"❌ An unexpected error occurred in the NEAR Intents MCP Server:",
 		error,
 	);
 	process.exit(1);

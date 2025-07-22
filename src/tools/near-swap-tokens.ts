@@ -9,7 +9,7 @@ type TokensToolParams = z.infer<typeof tokensToolParams>;
 export const nearSwapTokensTool = {
 	name: "GET_NEAR_SWAP_TOKENS",
 	description:
-		"[DISCOVERY] Get a list of tokens currently supported by the 1Click API for NEAR intent swaps. Returns token metadata including blockchain, contract address, current USD price, symbol, decimals, and price update timestamp. Use this to help users discover available tokens before requesting quotes.",
+		"[DISCOVERY] Get a list of tokens currently supported by the 1Click API for NEAR Intents. Returns token metadata including blockchain, contract address, current USD price, symbol, decimals, and price update timestamp. Use this to help users discover available tokens before requesting quotes.",
 	parameters: tokensToolParams,
 	execute: async (_: TokensToolParams) => {
 		const nearSwapService = new NearSwapService();
