@@ -5,7 +5,7 @@
 	"main": "dist/index.js",
 	"type": "module",
 	"bin": {
-		"mcp-near-swap-server": "dist/index.js"
+		"mcp-near-intents": "dist/index.js"
 	},
 	"files": ["dist"],
 	"scripts": {
