@@ -179,7 +179,7 @@ The server provides detailed error messages for common issues:
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/IQAIcom/mcp-near-intents.git
 cd mcp-near-intents
 
 # Watch for changes during development
