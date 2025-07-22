@@ -1,5 +1,13 @@
 # mcp-near-intent-swaps
 
+## 0.0.11
+
+### Patch Changes
+
+- c45c616: Updates package name to mcp-near-intents
+- 1d308ef: Updates bin name to mcp-near-intents
+- a13f907: Updates MCP server name across files
+
 ## 0.0.10
 
 ### Patch Changes
